@@ -1,13 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
-import static java.lang.Math.cos;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp (name = "ytt")
 public class ytt extends OpMode {
@@ -15,32 +12,40 @@ public class ytt extends OpMode {
     DcMotor mot2;
     DcMotor mot3;
     DcMotor mot4;
-    Servo servo1;
-    double ticks= 2786.2;
+    DcMotor mot5;
+    DcMotor mot6;
+    DcMotor mot7;
+    CRServo servo1;
+    double ticks = 2786.2;
     double newtarget;
-    double s1=1;
+    double s1 = 1;
+
 
     @Override
     public void init() {
         telemetry.addData("initialization", "is too successful");
         telemetry.update();
 
-        mot1= hardwareMap.get(DcMotor.class, "mot1");      //   1    2 <<the wheels on the bus goes round and round
-        mot2= hardwareMap.get(DcMotor.class, "mot2");      //   3    4
-        mot3= hardwareMap.get(DcMotor.class, "mot3");
-        mot4= hardwareMap.get(DcMotor.class, "mot4");
-        servo1 = hardwareMap.get(Servo.class, "servo1");
+        mot1 = hardwareMap.get(DcMotor.class, "mot1");      //   1    2 <<the wheels on the bus goes round and round
+        mot2 = hardwareMap.get(DcMotor.class, "mot2");      //   3    4
+        mot3 = hardwareMap.get(DcMotor.class, "mot3");
+        mot4 = hardwareMap.get(DcMotor.class, "mot4");
+        mot5 = hardwareMap.get(DcMotor.class, "mot5");
+        mot6 = hardwareMap.get(DcMotor.class, "mot6");
+        mot7 = hardwareMap.get(DcMotor.class, "mot7");
+        servo1 = hardwareMap.get(CRServo.class, "servo1");
 
         mot1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         mot2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         mot3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         mot4.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        mot5.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        mot6.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        mot7.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
         mot3.setDirection(DcMotorSimple.Direction.REVERSE);
         mot1.setDirection(DcMotorSimple.Direction.REVERSE);
-
-
 
 
     }
@@ -101,23 +106,23 @@ public class ytt extends OpMode {
 */
 
 //test motor
-        if (gamepad1.b){
+        if (gamepad1.b) {
 
-                s1=2;
-
-        }
-        if (gamepad1.y){
-
-                s1=1;
+            s1 = 2;
 
         }
+        if (gamepad1.y) {
 
+            s1 = 1;
 
-        if (gamepad1.x){
-            servo1.setPosition(1);
         }
-
-
+        if (gamepad1.left_bumper) {
+            doubleMotor(1);
+        } else if (gamepad1.right_bumper) {
+            doubleMotor(-1);
+        } else {
+            doubleMotor(0);
+        }
 
 
         double y = -gamepad1.left_stick_y; // Remember, Y stick is reversed! // For moving forward and backward.
@@ -133,28 +138,38 @@ public class ytt extends OpMode {
         double rightBackPower = (y + x - rx) / denominator;
 
 
-            mot1.setPower(leftFrontPower/s1);
-            mot3.setPower(leftBackPower/s1);
-            mot4.setPower(rightBackPower/s1);
-            mot2.setPower(rightFrontPower/s1);
+        mot1.setPower(leftFrontPower / s1);
+        mot3.setPower(leftBackPower / s1);
+        mot4.setPower(rightBackPower / s1);
+        mot2.setPower(rightFrontPower / s1);
 
         telemetry.addData("BackLeftEncoder", mot3.getCurrentPosition());
-        telemetry.addData("BackRightEncoder",mot4.getCurrentPosition());
+        telemetry.addData("BackRightEncoder", mot4.getCurrentPosition());
         telemetry.addData("FrontLeftEncoder", mot1.getCurrentPosition());
         telemetry.addData("FrontRightEncoder", mot2.getCurrentPosition());
         telemetry.addData("Suppress", s1);
-        telemetry.addData("Slow mode: ", slow_mode_button);
+        telemetry.addData("Arm ", mot5.getCurrentPosition());
+        telemetry.addData("Rotation motor for arm (Part 1)", mot6.getCurrentPosition());
+        telemetry.addData("Rotation motor for arm (Part 2)", mot7.getCurrentPosition());
         telemetry.update();
 
-
-
-
-
-
+        if (gamepad1.a) {
+            mot5.setPower(1);
+        } else if (gamepad1.x) {
+            mot5.setPower(-1);
+        } else {
+            mot5.setPower(0);
+        }
     }
 
-
-
-
+    private void doubleMotor(int a) {
+        mot6.setPower(a);
+        mot7.setPower(a);
     }
+}
+
+
+
+
+
 
