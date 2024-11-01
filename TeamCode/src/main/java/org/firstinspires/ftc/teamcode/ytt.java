@@ -17,7 +17,6 @@ public class ytt extends OpMode {
     DcMotor mot7;
     CRServo servo1;
     double ticks = 2786.2;
-    double newtarget;
     double s1 = 1;
 
 
@@ -117,11 +116,19 @@ public class ytt extends OpMode {
 
         }
         if (gamepad1.left_bumper) {
-            doubleMotor(1);
+            mot6.setPower(1);
         } else if (gamepad1.right_bumper) {
-            doubleMotor(-1);
+            mot6.setPower(-1);
         } else {
-            doubleMotor(0);
+            mot6.setPower(0);
+        }
+
+        if(gamepad1.left_bumper){
+            mot7.setPower(1);
+        }else if (gamepad1.right_bumper){
+            mot7.setPower(-1);
+        }else{
+            mot7.setPower(0);
         }
 
 
@@ -151,7 +158,6 @@ public class ytt extends OpMode {
         telemetry.addData("Arm ", mot5.getCurrentPosition());
         telemetry.addData("Rotation motor for arm (Part 1)", mot6.getCurrentPosition());
         telemetry.addData("Rotation motor for arm (Part 2)", mot7.getCurrentPosition());
-        telemetry.update();
 
         if (gamepad1.a) {
             mot5.setPower(1);
@@ -162,10 +168,6 @@ public class ytt extends OpMode {
         }
     }
 
-    private void doubleMotor(int a) {
-        mot6.setPower(a);
-        mot7.setPower(a);
-    }
 }
 
 
