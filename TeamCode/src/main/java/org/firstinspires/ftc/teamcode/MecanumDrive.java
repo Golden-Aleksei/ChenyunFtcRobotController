@@ -63,14 +63,14 @@ public final class MecanumDrive {
                 RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD;
 
         // drive model parameters
-        public double inPerTick = -0.7;
-        public double lateralInPerTick = -0.0116791211; // Changed this from being equal to inPerTick -Julian
-        public double trackWidthTicks = 0;
+        public double inPerTick = .00297479;
+        public double lateralInPerTick = 0.0025930185228361965; // Changed this from being equal to inPerTick -Julian
+        public double trackWidthTicks = 5050.867231327216;
 
         // feedforward parameters (in tick units)
-        public double kS = 0;
-        public double kV = 0;
-        public double kA = 0;
+        public double kS = 0.7293819451665811;
+        public double kV = 0.0005381245475754315;
+        public double kA = .0001;
 
         // path profile parameters (in inches)
         public double maxWheelVel = 50;
@@ -82,9 +82,9 @@ public final class MecanumDrive {
         public double maxAngAccel = Math.PI;
 
         // path controller gains
-        public double axialGain = 0.0;
-        public double lateralGain = 0.0;
-        public double headingGain = 0.0; // shared with turn
+        public double axialGain = 7;
+        public double lateralGain = 4;
+        public double headingGain =5; // shared with turn
 
         public double axialVelGain = 0.0;
         public double lateralVelGain = 0.0;
@@ -140,6 +140,8 @@ public final class MecanumDrive {
 
             // TODO: reverse encoders if needed
             //   leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+            leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+            rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         }
 
         @Override
@@ -238,7 +240,7 @@ public final class MecanumDrive {
 
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
 
-        localizer = new DriveLocalizer();
+        localizer = new ThreeDeadWheelLocalizer(hardwareMap, PARAMS.inPerTick);  //ME CHANGE THIS
 
         FlightRecorder.write("MECANUM_PARAMS", PARAMS);
     }
