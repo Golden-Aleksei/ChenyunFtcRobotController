@@ -93,24 +93,16 @@ public class autobots_rollOUT extends LinearOpMode {
             telemetry.addData("mot6", vipmain.getCurrentPosition());
             telemetry.addData("target mot6", mot6.getTargetPosition());
         }*/
-        telemetry.addData("vipermain", vipmain.getCurrentPosition());
-        telemetry.addData("target vipermain", vipmain.getTargetPosition());
-        telemetry.addData("mot6", vipmain.getCurrentPosition());
-        telemetry.addData("target mot6", mot6.getTargetPosition());
+        Pose2d beginPose = new Pose2d(0, 0, 0);
 
+            /*
+                Stuff that needs to be added tp calculations, add 13 degrees to the turning
+             */
+        Actions.runBlocking(
+                drive.actionBuilder(beginPose))  // Start the action builder at the initial pose
 
-
-
-            Actions.runBlocking(
-                    drive.actionBuilder(new Pose2d(-8, 63, Math.PI/ 2))
-
-                            .stopAndAdd(new motaction(mot6, mot7, 200))
-                            .waitSeconds(8)
-
-                            .build());
-
-
-            }
+                        .build()
+        );
 
 
 
